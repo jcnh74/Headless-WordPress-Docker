@@ -1,0 +1,56 @@
+services:
+  db:
+    image: mariadb:latest
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - backend-network
+    restart: always
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    build:
+      context: ./backend
+    volumes:
+      - wordpress_data:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      API_SITE_DOMAIN: ${API_SITE_DOMAIN:-localhost:8080}
+      # WP_HOME and WP_SITEURL will be set by setup.sh
+    ports:
+      - "8080:80"
+    networks:
+      - backend-network
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - SITE_DOMAIN=${SITE_DOMAIN:-localhost:3000}
+      - NEXT_PUBLIC_WORDPRESS_API_URL=http://${API_SITE_DOMAIN:-localhost:8080}/wp-json/wp/v2
+    depends_on:
+      - wordpress
+    networks:
+      - backend-network
+    restart: always
+
+volumes:
+  db_data:
+  wordpress_data:
+
+networks:
+  backend-network:
+    driver: bridge
