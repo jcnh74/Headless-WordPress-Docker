@@ -38,6 +38,7 @@ NEXT_PUBLIC_WORDPRESS_API_URL=http://localhost:8080/wp-json/wp/v2  # The URL for
 - Copy the project to your server.
 - Update `.env` and `docker-compose.yml` for server-specific settings.
 - Run `docker-compose up -d` on the server.
+- Run `docker-compose up --build -d; docker exec -it deployable-wordpress-1 /docker-entrypoint-init.d/setup.sh` to make sure the setup.sh not missed.
 
 ## Pushing to Private Repository
 
