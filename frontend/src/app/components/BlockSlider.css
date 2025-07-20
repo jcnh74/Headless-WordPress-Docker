@@ -1,0 +1,75 @@
+.block-slider-viewport {
+  width: 100vw;
+  height: var(--app-height, 100vh);
+  overflow: hidden;
+  position: relative;
+}
+
+.block-slider-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: var(--app-height, 100vh);
+  will-change: transform;
+}
+
+.block-slider-slide {
+  width: 100vw;
+  height: var(--app-height, 100vh);
+  flex: 0 0 100vw;
+  overflow: auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.block-slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.block-slider-arrow.left {
+  left: 16px;
+}
+.block-slider-arrow.right {
+  right: 16px;
+}
+.block-slider-arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.block-slider-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  z-index: 10;
+}
+.block-slider-dots button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.block-slider-dots button.active {
+  opacity: 1;
+}
